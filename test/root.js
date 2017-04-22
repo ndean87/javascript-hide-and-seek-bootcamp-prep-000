@@ -10,7 +10,12 @@ beforeEach(function(done) {
   });
   const html = path.resolve(__dirname, '..', 'index.html');
 
-  jsdom.env(html, [], { src: babelResult.code }, (err, window) => {
+  var virtualConsole = jsdom.createVirtualConsole();
+  virtualConsole.on("log", function (message) {
+    console.log(message);
+  });
+
+  jsdom.env(html, [], { src: babelResult.code, virtualConsole: virtualConsole }, (err, window) => {
     if (err) {
       return done(err);
     }
